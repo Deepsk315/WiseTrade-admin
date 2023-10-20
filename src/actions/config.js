@@ -1,5 +1,5 @@
 
-const env = 'test'
+const env = 'prod'
 
 export const url = () => {
   switch (env) {
