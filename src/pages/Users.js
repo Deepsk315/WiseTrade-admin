@@ -3,6 +3,7 @@ import Pagination from '../components/Pagination'
 import { url } from '../actions/config'
 import ModalImage from "react-modal-image";
 import axios from 'axios'
+import {loggedUser} from "../../src/utils/loggedUser.js"
 // import "react-modal-image/css/modal-image.css";
 
 
@@ -15,19 +16,19 @@ export default function Users() {
   const [error, setError] = useState('')
   const [loading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currUser , setCurrUser] = useState({})
 
-
+  
   const getUsers = () => {
     setIsLoading(true)
-    axios.get(url() + 'users/allUsers', {
+    axios.post(url() + 'users/allUsers', {
       skip: skip,
-      limit: limit
+      limit: limit,
+      currUser
     }).then(response => {
       if (response?.status == 200) {
-        console.log('res.data : ', response?.data)
-        setUsers(response?.data)
-        // if (response?.data?.total) setTotal(response?.data?.total)
-        setTotal(response?.data?.length)
+        setUsers(response?.data?.data)
+        if (response?.data?.total) setTotal(response?.data?.total)
         setIsLoading(false)
       }
     }).catch(error => {
@@ -37,8 +38,21 @@ export default function Users() {
     })
   }
 
+  const getLoggedUser = async() => {
+    await loggedUser()
+    .then(res => {
+      setCurrUser(res.current_user)
+    }).catch(err => {
+    })
+  }
+
   useEffect(() => {
-    getUsers()
+    getLoggedUser();
+  }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      getUsers()
+    }, 500);
   }, [skip])
 
   return (

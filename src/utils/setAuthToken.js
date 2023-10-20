@@ -7,6 +7,7 @@ const setAuthToken = token => {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
   } else {
     window.localStorage.removeItem('web3_japan_admin_token')
+    window.localStorage.removeItem('jwtToken');
     delete axios.defaults.headers.common['Authorization'];
   }
 };

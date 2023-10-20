@@ -37,6 +37,7 @@ export default function Login({ onLogin }) {
         const token = response?.data?.token
         if (token) {
           setAuthToken(token)
+          window.localStorage.setItem('user_id', response?.data?._id)
           onLogin()
         }
         // history.push('/courses')

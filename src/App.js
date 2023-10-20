@@ -55,12 +55,14 @@ function App() {
           console.log('token has expired or malformed');
           onLogout();
           setAuthToken('');
+          localStorage.removeItem('user_id');
           localStorage.removeItem('web3_japan_admin_token');
         }
       } catch (error) {
         console.error('Error decoding token:', error);
         onLogout()
         setAuthToken('');
+        localStorage.removeItem('user_id');
         localStorage.removeItem('web3_japan_admin_token');
       }
     }
